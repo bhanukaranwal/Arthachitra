@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: arthachitra-config
+  namespace: arthachitra-prod
+data:
+  APP_ENV: "production"
+  LOG_LEVEL: "info"
+  FEATURE_TOGGLE_AI: "true"
+  FEATURE_TOGGLE_ADVANCED_CHARTS: "true"
+  FEATURE_TOGGLE_ORDERBOOK: "true"
+  REDIS_HOST: "arthachitra-redis"
+  POSTGRES_HOST: "arthachitra-postgres"
+  ML_SERVICE_URL: "http://arthachitra-ml:8001"
+  TICK_ENGINE_URL: "http://arthachitra-tick-engine:9091"
