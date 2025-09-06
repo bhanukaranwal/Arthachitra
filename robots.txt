@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /.env
+Disallow: /config/
+
+Sitemap: https://arthachitra.com/sitemap.xml
