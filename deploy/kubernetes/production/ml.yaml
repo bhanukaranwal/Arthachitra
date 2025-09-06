@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arthachitra-ml
+  namespace: arthachitra-prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: arthachitra-ml
+  template:
+    metadata:
+      labels:
+        app: arthachitra-ml
+        tier: ml
+    spec:
+      containers:
+      - name: ml
+        image: arthachitra/ml:latest
+        ports:
+        - containerPort: 8001
+        env:
+        - name: MODEL_PATH
+          value: "/app/models"
+        - name: REDIS_URL
+          value: "redis://:$(REDIS_PASSWORD)@arthachitra-redis:6379"
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: arthachitra-secrets
+              key: redis-password
+        envFrom:
+        - configMapRef:
+            name: arthachitra-config
+        resources:
+          limits:
+            cpu: "2"
+            memory: "4Gi"
+            nvidia.com/gpu: 1  # Optional GPU support
+          requests:
+            cpu: "1"
+            memory: "2Gi"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8001
+          initialDelaySeconds: 20
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8001
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        volumeMounts:
+        - name: model-storage
+          mountPath: /app/models
+      volumes:
+      - name: model-storage
+        persistentVolumeClaim:
+          claimName: ml-models-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: arthachitra-ml
+  namespace: arthachitra-prod
+spec:
+  selector:
+    app: arthachitra-ml
+  ports:
+  - port: 8001
+    targetPort: 8001
+  type: ClusterIP
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ml-models-pvc
+  namespace: arthachitra-prod
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
