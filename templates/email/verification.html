@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Account - {{ app_name }}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #3b82f6;
+            margin-bottom: 10px;
+        }
+        .hindi-text {
+            font-size: 16px;
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #3b82f6;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        .warning {
+            background-color: #fef3c7;
+            border: 1px solid #f59e0b;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">Arthachitra</div>
+            <div class="hindi-text">अर्थचित्र - Financial Canvas</div>
+        </div>
+        
+        <h2>Welcome to Arthachitra!</h2>
+        
+        <p>Thank you for signing up for Arthachitra, the next-generation trading platform designed for Indian markets with global reach.</p>
+        
+        <p>To get started and activate your account, please verify your email address by clicking the button below:</p>
+        
+        <div style="text-align: center;">
+            <a href="{{ verification_link }}" class="button">Verify My Account</a>
+        </div>
+        
+        <div class="warning">
+            <strong>🔐 Security Note:</strong> This verification link will expire in 24 hours. If you didn't create an account with Arthachitra, please ignore this email.
+        </div>
+        
+        <p>Once verified, you'll have access to:</p>
+        <ul>
+            <li>🚀 Advanced charting with Indian themes</li>
+            <li>📊 Real-time order flow and heatmap analysis</li>
+            <li>🤖 AI-powered pattern recognition</li>
+            <li>🔗 Multi-broker integration (Zerodha, Fyers, and more)</li>
+            <li>📝 VedaScript custom strategy language</li>
+        </ul>
+        
+        <p>If you have any questions or need help getting started, our support team is here to assist you.</p>
+        
+        <div class="footer">
+            <p>Best regards,<br>The Arthachitra Team</p>
+            <p>This email was sent to you because you registered for an Arthachitra account. If you didn't register, please contact our support team.</p>
+            <p>&copy; 2024 Arthachitra. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
