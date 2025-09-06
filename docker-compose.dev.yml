@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  frontend-dev:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_WS_URL=ws://localhost:8000
+      - NODE_ENV=development
+    depends_on:
+      - backend-dev
+
+  backend-dev:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@postgres-dev:5432/arthachitra
+      - REDIS_URL=redis://redis-dev:6379
+      - ENVIRONMENT=development
+      - DEBUG=true
+    depends_on:
+      - postgres-dev
+      - redis-dev
+    restart: unless-stopped
+
+  ml-dev:
+    build:
+      context: ./ml
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./ml:/app
+      - ml-models-dev:/app/models
+    environment:
+      - REDIS_URL=redis://redis-dev:6379
+      - ENVIRONMENT=development
+    depends_on:
+      - redis-dev
+    restart: unless-stopped
+
+  postgres-dev:
+    image: timescale/timescaledb-ha:pg14-latest
+    environment:
+      - POSTGRES_DB=arthachitra
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+
+  redis-dev:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data_dev:/data
+    restart: unless-stopped
+
+  nginx-dev:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - frontend-dev
+      - backend-dev
+    restart: unless-stopped
+
+volumes:
+  postgres_data_dev:
+  redis_data_dev:
+  ml-models-dev:
+
+networks:
+  default:
+    name: arthachitra-dev-network
