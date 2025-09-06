@@ -1,4 +1,3 @@
-```markdown
 # Arthachitra (अर्थचित्र)
 ### *The Ultimate Open-Source Trading Platform*
 
