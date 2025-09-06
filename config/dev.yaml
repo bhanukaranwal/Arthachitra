@@ -1,0 +1,72 @@
+# Arthachitra Development Configuration
+
+app:
+  name: "arthachitra"
+  environment: "development"
+  debug: true
+  log_level: "DEBUG"
+  cors_origins:
+    - "http://localhost:3000"
+    - "http://localhost:3001"
+    - "http://127.0.0.1:3000"
+
+database:
+  url: "postgresql://postgres:password@localhost:5432/arthachitra"
+  pool_size: 5
+  max_overflow: 10
+  echo: true
+  
+redis:
+  url: "redis://localhost:6379"
+  max_connections: 10
+
+websocket:
+  max_connections: 100
+  ping_interval: 25
+  ping_timeout: 60
+
+api:
+  rate_limit:
+    default: "1000/minute"
+    authenticated: "2000/minute"
+  timeout: 30
+
+security:
+  jwt:
+    secret_key: "dev-secret-key-change-in-production"
+    algorithm: "HS256"
+    access_token_expire_minutes: 60
+    refresh_token_expire_days: 7
+
+monitoring:
+  prometheus:
+    enabled: false
+  sentry:
+    enabled: false
+
+market_data:
+  providers:
+    yahoo:
+      enabled: true
+      rate_limit: "100/minute"
+    
+    demo:
+      enabled: true
+      simulate_realtime: true
+
+execution:
+  paper_trading_only: true
+  risk_checks:
+    enabled: true
+    max_order_value: 100000
+    max_position_size: 500000
+
+ml_services:
+  enabled: true
+  model_path: "./ml/models"
+  batch_size: 8
+
+logging:
+  level: "DEBUG"
+  format: "colored"
+  file: "./logs/arthachitra-dev.log"
