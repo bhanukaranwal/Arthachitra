@@ -1,0 +1,15 @@
+/* TEAM */
+Lead Developer: Arthachitra Team
+Contact: team [at] arthachitra.com
+Location: India
+
+/* THANKS */
+TradingView for charting inspiration
+Zerodha for API excellence
+Open source community
+
+/* SITE */
+Last update: 2024/01/01
+Language: English / Hindi
+Doctype: HTML5
+IDE: VS Code, PyCharm
