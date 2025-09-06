@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arthachitra-backend
+  namespace: arthachitra-prod
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: arthachitra-backend
+  template:
+    metadata:
+      labels:
+        app: arthachitra-backend
+        tier: backend
+    spec:
+      containers:
+      - name: backend
+        image: arthachitra/backend:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://arthachitra_user:$(DATABASE_PASSWORD)@arthachitra-postgres:5432/arthachitra"
+        - name: REDIS_URL
+          value: "redis://:$(REDIS_PASSWORD)@arthachitra-redis:6379"
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: arthachitra-secrets
+              key: database-password
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: arthachitra-secrets
+              key: redis-password
+        - name: JWT_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: arthachitra-secrets
+              key: jwt-secret
+        envFrom:
+        - configMapRef:
+            name: arthachitra-config
+        resources:
+          limits:
+            cpu: "2"
+            memory: "2Gi"
+          requests:
+            cpu: "1"
+            memory: "1Gi"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 15
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: arthachitra-backend
+  namespace: arthachitra-prod
+spec:
+  selector:
+    app: arthachitra-backend
+  ports:
+  - port: 8000
+    targetPort: 8000
+  type: ClusterIP
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: arthachitra-backend-hpa
+  namespace: arthachitra-prod
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: arthachitra-backend
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
