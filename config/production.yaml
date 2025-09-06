@@ -1,0 +1,40 @@
+app:
+  name: "arthachitra"
+  environment: "production"
+  debug: false
+  secret_key: "${SECRET_KEY}"
+
+database:
+  url: "${DATABASE_URL}"
+  pool_size: 20
+  max_overflow: 30
+
+redis:
+  url: "${REDIS_URL}"
+  password: "${REDIS_PASSWORD}"
+
+jwt:
+  secret_key: "${JWT_SECRET_KEY}"
+  algorithm: "HS256"
+  access_token_expire_minutes: 30
+
+brokers:
+  zerodha:
+    api_key: "${ZERODHA_API_KEY}"
+    api_secret: "${ZERODHA_API_SECRET}"
+  
+  fyers:
+    app_id: "${FYERS_APP_ID}"
+    secret_key: "${FYERS_SECRET_KEY}"
+
+monitoring:
+  sentry:
+    dsn: "${SENTRY_DSN}"
+  
+  prometheus:
+    enabled: true
+    port: 9090
+
+logging:
+  level: "INFO"
+  format: "json"
