@@ -1,0 +1,32 @@
+{
+  "common": {
+    "loading": "लोड हो रहा है...",
+    "error": "त्रुटि",
+    "success": "सफलता",
+    "cancel": "रद्द करें",
+    "confirm": "पुष्टि करें",
+    "save": "सहेजें",
+    "delete": "हटाएं",
+    "edit": "संपादित करें",
+    "close": "बंद करें"
+  },
+  "trading": {
+    "buy": "खरीदें",
+    "sell": "बेचें",
+    "quantity": "मात्रा",
+    "price": "कीमत",
+    "market_order": "मार्केट ऑर्डर",
+    "limit_order": "लिमिट ऑर्डर",
+    "place_order": "ऑर्डर दें",
+    "order_placed": "ऑर्डर सफलतापूर्वक दिया गया",
+    "order_cancelled": "ऑर्डर रद्द किया गया",
+    "insufficient_funds": "अपर्याप्त धन"
+  },
+  "portfolio": {
+    "total_value": "कुल मूल्य",
+    "day_pnl": "दिन का P&L",
+    "cash_balance": "नकद शेष",
+    "positions": "स्थितियां",
+    "unrealized_pnl": "अवास्तविक P&L"
+  }
+}
