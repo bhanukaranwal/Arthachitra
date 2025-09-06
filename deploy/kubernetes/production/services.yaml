@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: arthachitra-backend-headless
+  namespace: arthachitra-prod
+spec:
+  clusterIP: None
+  selector:
+    app: arthachitra-backend
+  ports:
+  - port: 8000
+    targetPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: arthachitra-tick-engine-metrics
+  namespace: arthachitra-prod
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9091"
+    prometheus.io/path: "/metrics"
+spec:
+  selector:
+    app: arthachitra-tick-engine
+  ports:
+  - name: metrics
+    port: 9091
+    targetPort: 9091
+  type: ClusterIP
