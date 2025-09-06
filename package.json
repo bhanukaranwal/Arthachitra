@@ -1,0 +1,55 @@
+{
+  "name": "arthachitra",
+  "version": "1.0.0",
+  "description": "Next-generation trading platform with advanced charting and order flow analysis",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && python -m uvicorn main:app --reload",
+    "build": "npm run build:frontend",
+    "build:frontend": "cd frontend && npm run build",
+    "start": "npm run start:frontend",
+    "start:frontend": "cd frontend && npm start",
+    "test": "npm run test:frontend && npm run test:backend",
+    "test:frontend": "cd frontend && npm test",
+    "test:backend": "cd backend && python -m pytest",
+    "lint": "npm run lint:frontend && npm run lint:backend", 
+    "lint:frontend": "cd frontend && npm run lint",
+    "lint:backend": "cd backend && black . && isort . && flake8 .",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "k8s:deploy": "kubectl apply -f deploy/kubernetes/",
+    "clean": "rm -rf node_modules frontend/node_modules frontend/.next backend/__pycache__ backend/**/__pycache__"
+  },
+  "keywords": [
+    "trading",
+    "finance",
+    "charts",
+    "order-flow",
+    "indian-markets",
+    "real-time",
+    "websockets",
+    "react",
+    "fastapi",
+    "machine-learning"
+  ],
+  "author": "Arthachitra Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/arthachitra.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/arthachitra/issues"
+  },
+  "homepage": "https://github.com/yourusername/arthachitra#readme",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}
