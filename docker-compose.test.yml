@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  frontend-test:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend-test:8000
+      - NODE_ENV=test
+    depends_on:
+      - backend-test
+
+  backend-test:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@postgres-test:5432/arthachitra_test
+      - REDIS_URL=redis://redis-test:6379
+      - ENVIRONMENT=test
+    depends_on:
+      - postgres-test
+      - redis-test
+
+  postgres-test:
+    image: timescale/timescaledb-ha:pg14-latest
+    environment:
+      - POSTGRES_DB=arthachitra_test
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5433:5432"
+
+  redis-test:
+    image: redis:7-alpine
+    ports:
+      - "6380:6379"
+
+networks:
+  default:
+    name: arthachitra-test-network
