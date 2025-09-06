@@ -1,0 +1,54 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: arthachitra-ingress
+  namespace: arthachitra-prod
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    nginx.ingress.kubernetes.io/websocket-services: "arthachitra-backend"
+spec:
+  tls:
+  - hosts:
+    - arthachitra.com
+    - api.arthachitra.com
+    secretName: arthachitra-tls
+  rules:
+  - host: arthachitra.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: arthachitra-frontend
+            port:
+              number: 80
+  - host: api.arthachitra.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: arthachitra-backend
+            port:
+              number: 80
+      - path: /ws
+        pathType: Prefix
+        backend:
+          service:
+            name: arthachitra-backend
+            port:
+              number: 80
+      - path: /ml
+        pathType: Prefix
+        backend:
+          service:
+            name: arthachitra-ml
+            port:
+              number: 80
