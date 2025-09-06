@@ -1,0 +1,29 @@
+backup:
+  schedule: "0 2 * * *"  # Daily at 2 AM
+  retention_days: 30
+  compression: true
+  
+  databases:
+    - name: arthachitra
+      type: postgresql
+      host: localhost
+      port: 5432
+      username: postgres
+      
+  redis:
+    host: localhost
+    port: 6379
+    
+  files:
+    - path: ./uploads
+      exclude: ["*.tmp", "*.log"]
+    - path: ./config
+      exclude: [".env*", "*.key"]
+      
+  destinations:
+    local:
+      path: /var/backups/arthachitra
+    s3:
+      bucket: arthachitra-backups
+      region: ap-south-1
+      prefix: production/
