@@ -1,0 +1,39 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close"
+  },
+  "trading": {
+    "buy": "Buy",
+    "sell": "Sell",
+    "quantity": "Quantity",
+    "price": "Price",
+    "market_order": "Market Order",
+    "limit_order": "Limit Order",
+    "place_order": "Place Order",
+    "order_placed": "Order placed successfully",
+    "order_cancelled": "Order cancelled",
+    "insufficient_funds": "Insufficient funds"
+  },
+  "portfolio": {
+    "total_value": "Total Value",
+    "day_pnl": "Day P&L",
+    "cash_balance": "Cash Balance",
+    "positions": "Positions",
+    "unrealized_pnl": "Unrealized P&L"
+  },
+  "charts": {
+    "candlestick": "Candlestick",
+    "line": "Line",
+    "volume": "Volume",
+    "indicators": "Indicators",
+    "timeframes": "Timeframes"
+  }
+}
