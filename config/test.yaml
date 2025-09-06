@@ -1,0 +1,45 @@
+# Arthachitra Test Configuration
+
+app:
+  name: "arthachitra-test"
+  environment: "test"
+  debug: true
+  log_level: "WARNING"
+
+database:
+  url: "postgresql://postgres:password@localhost:5432/arthachitra_test"
+  pool_size: 1
+  echo: false
+
+redis:
+  url: "redis://localhost:6379/1"  # Use database 1 for tests
+
+websocket:
+  max_connections: 10
+
+api:
+  rate_limit:
+    default: "10000/minute"  # High limit for tests
+  timeout: 5
+
+security:
+  jwt:
+    secret_key: "test-secret-key"
+    access_token_expire_minutes: 5  # Short expiry for testing
+
+market_data:
+  providers:
+    mock:
+      enabled: true
+
+execution:
+  paper_trading_only: true
+  risk_checks:
+    enabled: false  # Disable for testing
+
+ml_services:
+  enabled: false
+
+logging:
+  level: "WARNING"
+  format: "simple"
