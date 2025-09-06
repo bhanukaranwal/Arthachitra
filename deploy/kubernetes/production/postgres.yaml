@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: arthachitra-postgres
+  namespace: arthachitra-prod
+spec:
+  serviceName: "arthachitra-postgres"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: arthachitra-postgres
+  template:
+    metadata:
+      labels:
+        app: arthachitra-postgres
+        tier: database
+    spec:
+      containers:
+      - name: postgres
+        image: timescale/timescaledb-ha:pg14-latest
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: "arthachitra"
+        - name: POSTGRES_USER
+          value: "arthachitra_user"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: arthachitra-secrets
+              key: database-password
+        - name: PGDATA
+          value: "/var/lib/postgresql/data/pgdata"
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+        resources:
+          limits:
+            cpu: "2"
+            memory: "4Gi"
+          requests:
+            cpu: "1"
+            memory: "2Gi"
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - arthachitra_user
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - arthachitra_user
+          initialDelaySeconds: 10
+          periodSeconds: 5
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-storage
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 50Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: arthachitra-postgres
+  namespace: arthachitra-prod
+spec:
+  selector:
+    app: arthachitra-postgres
+  ports:
+  - port: 5432
+    targetPort: 5432
+  type: ClusterIP
