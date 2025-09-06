@@ -1,0 +1,43 @@
+# C++ tick engine build
+FROM ubuntu:22.04 as builder
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    cmake \
+    git \
+    libhiredis-dev \
+    nlohmann-json3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /build
+COPY tick_engine/ .
+
+# Build the application
+RUN mkdir build && cd build && \
+    cmake -DCMAKE_BUILD_TYPE=Release .. && \
+    make -j$(nproc)
+
+# Production stage
+FROM ubuntu:22.04
+
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y \
+    libhiredis0.14 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create non-root user
+RUN useradd --create-home --shell /bin/bash tickengine
+USER tickengine
+WORKDIR /app
+
+# Copy built executable
+COPY --from=builder --chown=tickengine:tickengine /build/build/tick_engine .
+COPY --from=builder --chown=tickengine:tickengine /build/config/ ./config/
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD pgrep tick_engine || exit 1
+
+# Run the tick engine
+CMD ["./tick_engine"]
