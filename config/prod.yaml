@@ -1,0 +1,115 @@
+# Arthachitra Production Configuration
+
+app:
+  name: "arthachitra"
+  environment: "production"
+  debug: false
+  log_level: "INFO"
+  cors_origins:
+    - "https://arthachitra.com"
+    - "https://app.arthachitra.com"
+
+database:
+  url: "${DATABASE_URL}"
+  pool_size: 20
+  max_overflow: 30
+  pool_timeout: 30
+  pool_recycle: 3600
+  echo: false
+
+redis:
+  url: "${REDIS_URL}"
+  max_connections: 100
+  retry_on_timeout: true
+  socket_keepalive: true
+  socket_keepalive_options:
+    TCP_KEEPIDLE: 1
+    TCP_KEEPINTVL: 3
+    TCP_KEEPCNT: 5
+
+websocket:
+  max_connections: 10000
+  ping_interval: 25
+  ping_timeout: 60
+  compression: true
+
+api:
+  rate_limit:
+    default: "1000/minute"
+    authenticated: "5000/minute"
+    premium: "10000/minute"
+  timeout: 30
+  max_request_size: "10MB"
+
+security:
+  jwt:
+    secret_key: "${JWT_SECRET}"
+    algorithm: "HS256"
+    access_token_expire_minutes: 30
+    refresh_token_expire_days: 30
+  cors:
+    allow_credentials: true
+    allow_methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    allow_headers: ["*"]
+
+monitoring:
+  prometheus:
+    enabled: true
+    port: 9090
+  sentry:
+    dsn: "${SENTRY_DSN}"
+    traces_sample_rate: 0.1
+  health_check:
+    interval: 30
+    timeout: 10
+
+market_data:
+  providers:
+    zerodha:
+      enabled: true
+      api_key: "${ZERODHA_API_KEY}"
+      api_secret: "${ZERODHA_API_SECRET}"
+      rate_limit: "1000/minute"
+    
+    binance:
+      enabled: true
+      api_key: "${BINANCE_API_KEY}"
+      api_secret: "${BINANCE_API_SECRET}"
+      rate_limit: "1200/minute"
+  
+  cache:
+    quote_ttl: 1  # seconds
+    historical_ttl: 300  # seconds
+    orderbook_ttl: 0.1  # seconds
+
+execution:
+  risk_checks:
+    enabled: true
+    max_order_value: 10000000  # 1 crore INR
+    max_position_size: 50000000  # 5 crore INR
+    max_daily_loss: 1000000  # 10 lakh INR
+  
+  order_timeout: 30
+  max_orders_per_second: 100
+
+ml_services:
+  model_path: "/app/models"
+  batch_size: 32
+  max_prediction_age: 300  # seconds
+  pattern_recognition:
+    confidence_threshold: 0.7
+  sentiment_analysis:
+    update_frequency: 300  # seconds
+
+logging:
+  level: "INFO"
+  format: "json"
+  file: "/var/log/arthachitra/app.log"
+  max_size: "100MB"
+  backup_count: 5
+  
+performance:
+  worker_processes: 4
+  worker_connections: 1000
+  keepalive_timeout: 65
+  client_max_body_size: "10M"
