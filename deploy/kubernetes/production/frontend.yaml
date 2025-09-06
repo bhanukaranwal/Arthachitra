@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arthachitra-frontend
+  namespace: arthachitra-prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: arthachitra-frontend
+  template:
+    metadata:
+      labels:
+        app: arthachitra-frontend
+        tier: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: arthachitra/frontend:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: NEXT_PUBLIC_API_URL
+          value: "https://api.arthachitra.com"
+        - name: NEXT_PUBLIC_WS_URL
+          value: "wss://api.arthachitra.com"
+        resources:
+          limits:
+            cpu: "1"
+            memory: "1Gi"
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: arthachitra-frontend
+  namespace: arthachitra-prod
+spec:
+  selector:
+    app: arthachitra-frontend
+  ports:
+  - port: 80
+    targetPort: 3000
+  type: ClusterIP
