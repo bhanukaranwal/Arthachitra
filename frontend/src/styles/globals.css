@@ -1,0 +1,311 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Variables for themes */
+:root {
+  /* Modern Light Theme */
+  --color-primary: #1f2937;
+  --color-secondary: #374151;
+  --color-accent: #3b82f6;
+  --color-background: #ffffff;
+  --color-surface: #f9fafb;
+  --color-text: #111827;
+  --color-text-secondary: #6b7280;
+  --color-border: #e5e7eb;
+  --color-success: #10b981;
+  --color-error: #ef4444;
+  --color-warning: #f59e0b;
+  
+  /* Chart colors */
+  --chart-background: #ffffff;
+  --chart-gridColor: #f3f4f6;
+  --chart-textColor: #374151;
+  --chart-borderColor: #d1d5db;
+  --chart-upColor: #10b981;
+  --chart-downColor: #ef4444;
+  --chart-volumeColor: #9ca3af;
+  --chart-crosshairColor: #6b7280;
+  
+  /* Order book colors */
+  --orderbook-bidColor: #dcfce7;
+  --orderbook-askColor: #fee2e2;
+  --orderbook-bidTextColor: #166534;
+  --orderbook-askTextColor: #991b1b;
+  --orderbook-spreadColor: #fef3c7;
+}
+
+/* Dark theme variables */
+.dark {
+  --color-primary: #f8fafc;
+  --color-secondary: #e2e8f0;
+  --color-accent: #3b82f6;
+  --color-background: #0f172a;
+  --color-surface: #1e293b;
+  --color-text: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  --color-border: #334155;
+  --color-success: #22c55e;
+  --color-error: #ef4444;
+  --color-warning: #eab308;
+  
+  --chart-background: #0f172a;
+  --chart-gridColor: #1e293b;
+  --chart-textColor: #cbd5e1;
+  --chart-borderColor: #475569;
+  --chart-upColor: #22c55e;
+  --chart-downColor: #ef4444;
+  --chart-volumeColor: #64748b;
+  --chart-crosshairColor: #94a3b8;
+  
+  --orderbook-bidColor: #065f46;
+  --orderbook-askColor: #7f1d1d;
+  --orderbook-bidTextColor: #34d399;
+  --orderbook-askTextColor: #f87171;
+  --orderbook-spreadColor: #451a03;
+}
+
+/* Rangoli theme */
+.theme-rangoli {
+  --color-primary: #7c3aed;
+  --color-secondary: #a855f7;
+  --color-accent: #ec4899;
+  --color-background: #fef7ff;
+  --color-surface: #faf5ff;
+  --color-text: #581c87;
+  --color-text-secondary: #7c2d92;
+  --color-border: #d8b4fe;
+  --color-success: #059669;
+  --color-error: #dc2626;
+  --color-warning: #d97706;
+}
+
+/* Diwali Glow theme */
+.theme-diwali {
+  --color-primary: #92400e;
+  --color-secondary: #b45309;
+  --color-accent: #f59e0b;
+  --color-background: #fffbeb;
+  --color-surface: #fef3c7;
+  --color-text: #78350f;
+  --color-text-secondary: #92400e;
+  --color-border: #fcd34d;
+  --color-success: #059669;
+  --color-error: #dc2626;
+  --color-warning: #d97706;
+}
+
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar styles */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-secondary);
+}
+
+/* Custom components */
+.chart-container {
+  position: relative;
+  background: var(--chart-background);
+  border: 1px solid var(--chart-borderColor);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.order-book {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+}
+
+.bid-level {
+  background: var(--orderbook-bidColor);
+  color: var(--orderbook-bidTextColor);
+}
+
+.ask-level {
+  background: var(--orderbook-askColor);
+  color: var(--orderbook-askTextColor);
+}
+
+.spread-indicator {
+  background: var(--orderbook-spreadColor);
+  color: var(--color-text);
+}
+
+/* Loading animations */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Trading status indicators */
+.status-live {
+  @apply inline-flex items-center px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full;
+}
+
+.status-disconnected {
+  @apply inline-flex items-center px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full;
+}
+
+.status-connecting {
+  @apply inline-flex items-center px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full;
+}
+
+/* Price movement indicators */
+.price-up {
+  @apply text-green-600 dark:text-green-400;
+}
+
+.price-down {
+  @apply text-red-600 dark:text-red-400;
+}
+
+.price-neutral {
+  @apply text-gray-600 dark:text-gray-400;
+}
+
+/* Button variants */
+.btn-primary {
+  @apply px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors duration-200;
+}
+
+.btn-secondary {
+  @apply px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-md transition-colors duration-200;
+}
+
+.btn-success {
+  @apply px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-md transition-colors duration-200;
+}
+
+.btn-danger {
+  @apply px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md transition-colors duration-200;
+}
+
+/* Form styles */
+.form-input {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+}
+
+.form-select {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white;
+}
+
+.form-label {
+  @apply block text-sm font-medium text-gray-700 mb-1;
+}
+
+/* Card styles */
+.card {
+  @apply bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700;
+}
+
+.card-header {
+  @apply px-6 py-4 border-b border-gray-200 dark:border-gray-700;
+}
+
+.card-body {
+  @apply px-6 py-4;
+}
+
+.card-footer {
+  @apply px-6 py-4 border-t border-gray-200 dark:border-gray-700;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .chart-container {
+    height: 300px;
+  }
+  
+  .order-book {
+    font-size: 0.875rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  :root {
+    --color-border: #000000;
+    --color-text-secondary: #000000;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
